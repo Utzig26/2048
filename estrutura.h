@@ -74,14 +74,19 @@ int perde (int tab[4][4]) {
     int i, j, cont = 0;
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
-            if (tab[i][j] != 0)
-                cont++;
+            if (tab[i][j] != 0) {
+                //Verifica se ainda pode ocorrer algum movimento somando valores.
+                if ((tab[i][j] == tab[i][j+1]) || (tab[i][j] == tab[i+1][j]) || (tab[i][j] == tab[i][j-1]) || (tab[i][j] == tab[i-1][j]))
+                    cont--; 
+                else 
+                    cont++;
+            }        
         }
     }
-    if (cont == 16) //Significa que não há mais espaços para adicionar mais blocos no tabuleiro.(Fim de Jogo)
+    if (cont == 16) //Significa que não há espaços para adicionar mais blocos no tabuleiro e não pode ocorrer nenhum movimento.(Fim de Jogo)
         return 1;
     else 
-        return 0; //Ainda há espaço no tabuleiro para adicionar mais blocos.
+        return 0; //Ainda há espaço no tabuleiro para adicionar mais blocos e é possível movimentar algum bloco.
 }
 
 //Função que zera o tabuleiro e o valor da pontuação.
