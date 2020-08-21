@@ -1,15 +1,16 @@
 /*funçoes para:
 	movimentação das peças
 */
-int movimentos (int tab[4][4], int tecla, int *pont);
+int movimentos (int tab[4][4], int tecla, int *pont, no **L);
+void atualiza_soma(int tab[4][4], int tecla, no **L);
 
 //CONTROLE DOS BLOCOS
-int movimentos (int tab[4][4], int tecla, int *pont) {
-    int i, j, aux2, aux, move = 1; 
+int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
+    int i, j, aux2, aux, soma, x, y, d, move = 1; 
     if (tecla == 1) {
         //Seta para a esquerda
         for (i = 0; i < 4; i++) {
-            aux2 = 0; //A variável aux2 deveria impedir a soma em cadeia, mas não deu certo :(
+            aux2 = 0; //A variável aux2 delimita o laço "for" com a variável aux.
             for (j = 1; j < 4; j++) { //A coluna j começa no 1, pois se fosse no 0 não teria como ir para a esquerda.
                 if (tab[i][j] != 0) { //Verifica se o número nessa posição é diferente de 0 para que haja movimentação.
                     aux = j; //aux é usado para que a variável j (coluna) não seja alterada dentro do loop.
@@ -18,11 +19,12 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
                             tab[i][aux-1] = tab[i][aux];
                             tab[i][aux] = 0; 
                         }
-                        else if (tab[i][aux-1] == tab[i][aux]) { //Se o número anterior é igual, ocorre a soma.
-                            tab[i][aux-1] += tab[i][aux-1];
+                        else if ((tab[i][aux-1] == tab[i][aux]) && (tab[i][aux-1] != -1)) { //Se o número anterior é igual e esse número não é -1, ocorre a soma.
+                            soma = tab[i][aux-1] + tab[i][aux];
+                            PUSH(L, soma); //Armazena o valor da soma em uma pilha.
+                            tab[i][aux-1] = -1; //Para que impessa outra soma neste local novamente.
                             tab[i][aux] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
-                            aux2 = aux-1; //aux2 recebe a última posição em que a soma foi realizada, para que impedisse outra soma neste local novamente.
                         }
                     } 
                 }
@@ -32,7 +34,7 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
     else if (tecla == 2) {
         //Seta para a direita
         for (i = 0; i < 4; i++) {
-            aux2 = 3; //A variável aux2 deveria impedir a soma em cadeia, mas não deu certo :(
+            aux2 = 3; //A variável aux2 delimita o laço "for" com a variável aux.
             for (j = 2; j >= 0; j--) { //A coluna j começa no 2, pois se fosse no 3 não teria como ir para a direita.
                 if (tab[i][j] != 0) { //Verifica se o número nessa posição é diferente de 0 para que haja movimentação.
                     aux = j; //aux é usado para que a variável j (coluna) não seja alterada dentro do loop.
@@ -41,11 +43,12 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
                             tab[i][aux+1] = tab[i][aux];
                             tab[i][aux] = 0;
                         }
-                        else if (tab[i][aux+1] == tab[i][aux]) { //Se o número posterior é igual, ocorre a soma.
-                            tab[i][aux+1] += tab[i][aux+1];
+                        else if ((tab[i][aux+1] == tab[i][aux]) && (tab[i][aux+1] != -1)) { //Se o número posterior é igual e esse número não é -1, ocorre a soma.
+                            soma = tab[i][aux+1] + tab[i][aux];
+                            PUSH(L, soma); //Armazena o valor da soma em uma pilha.
+                            tab[i][aux+1] = -1; //Para que impessa outra soma neste local novamente
                             tab[i][aux] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
-                            aux2 = aux+1; //aux2 recebe a última posição em que a soma foi realizada, para que impedisse outra soma neste local novamente.
                         }
                     }
                 }
@@ -55,7 +58,7 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
     else if (tecla == 3) {
         //Seta para cima
         for (j = 0; j < 4; j++) {
-            aux2 = 0; //A variável aux2 deveria impedir a soma em cadeia, mas não deu certo :(
+            aux2 = 0; //A variável aux2 delimita o laço "for" com a variável aux.
             for (i = 1; i < 4; i++) { //A linha i começa no 1, pois se fosse no 0 não teria como ir para cima.
                 if (tab[i][j] != 0) { //Verifica se o número nessa posição é diferente de 0 para que haja movimentação.
                     aux = i; //aux é usado para que a variável i (linha) não seja alterada dentro do loop.
@@ -64,11 +67,12 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
                             tab[aux-1][j] = tab[aux][j];
                             tab[aux][j] = 0;
                         }
-                        else if (tab[aux-1][j] == tab[aux][j]) { //Se o número acima é igual, ocorre a soma.
-                            tab[aux-1][j] += tab[aux-1][j];
+                        else if ((tab[aux-1][j] == tab[aux][j]) && (tab[aux-1][j] != -1)) { //Se o número acima é igual e esse número não é -1, ocorre a soma.
+                            soma = tab[aux-1][j] + tab[aux][j];
+                            PUSH(L, soma); //Armazena o valor da soma em uma pilha.
+                            tab[aux-1][j] = -1; //Para que impessa outra soma neste local novamente.
                             tab[aux][j] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
-                            aux2 = aux-1; //aux2 recebe a última posição em que a soma foi realizada, para que impedisse outra soma neste local novamente.
                         }
                     }
                 }
@@ -78,7 +82,7 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
     else if (tecla == 4) {
         //Seta para baixo
         for (j = 0; j < 4; j++) {
-            aux2 = 3; //A variável aux2 deveria impedir a soma em cadeia, mas não deu certo :(
+            aux2 = 3; //A variável aux2 delimita o laço "for" com a variável aux.
             for (i = 2; i >= 0; i--) { //A linha i começa no 2, pois se fosse no 3 não teria como ir para baixo.
                 if (tab[i][j] != 0) { //Verifica se o número nessa posição é diferente de 0 para que haja movimentação.
                     aux = i; //aux é usado para que a variável i (linha) não seja alterada dentro do loop.
@@ -87,16 +91,17 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
                             tab[aux+1][j] = tab[aux][j];
                             tab[aux][j] = 0;
                         }
-                        else if (tab[aux+1][j] == tab[aux][j]) { //Se o número abaixo é igual, ocorre a soma.
-                            tab[aux+1][j] += tab[aux+1][j];
+                        else if ((tab[aux+1][j] == tab[aux][j]) && (tab[aux+1][j] != -1)) { //Se o número abaixo é igual e esse número não é -1, ocorre a soma.
+                            soma = tab[aux+1][j] + tab[aux][j];
+                            PUSH(L, soma); //Armazena o valor da soma em uma pilha.
+                            tab[aux+1][j] = -1; //Para que impessa outra soma neste local novamente.
                             tab[aux][j] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
-                            aux2 = aux+1; //aux2 recebe a última posição em que a soma foi realizada, para que impedisse outra soma neste local novamente.
                         }
                     }
                 }
             }
-        }    
+        }  
     }
     else if ((tecla != 1) && (tecla != 2) && (tecla != 3) && (tecla != 4)) 
         move = 0;
@@ -104,4 +109,57 @@ int movimentos (int tab[4][4], int tecla, int *pont) {
         return 1;
     else 
         return 0;    
+}
+
+//Função que altera os valores definidos como -1 na função movimentos(), os quais devem ser o resultado da soma.
+void atualiza_soma(int tab[4][4], int tecla, no **L) {
+    int i, j, x;
+    if (tecla == 1) {
+        //Seta para esquerda
+        for (i = 3; i >= 0; i--) {
+            //Começa a reatribuir o valor do resultado da soma, começando pelo último que foi alterado e colocado na pilha.
+            for (j = 3; j >= 0; j--) {
+                if (tab[i][j] == -1) { //Verifica se o valor na posição é -1 para ser reatribuído.
+                    POP(L, &x); //Retira um valor do topo da pilha.
+                    tab[i][j] = x; //Valor atribuído novamente.
+                }
+            }
+        }
+    }
+    else if (tecla == 2) {
+        //Seta para direita
+        for (i = 3; i >= 0; i--) {
+            //Começa a reatribuir o valor do resultado da soma, começando pelo último que foi alterado e colocado na pilha até o primeiro.
+            for (j = 0; j < 4; j++) {
+                if (tab[i][j] == -1) { //Verifica se o valor na posição é -1 para ser reatribuído.
+                    POP(L, &x); //Retira um valor do topo da pilha.
+                    tab[i][j] = x; //Valor atribuído novamente.
+                }
+            }
+        }
+    }
+    else if (tecla == 3) {
+        //Seta para cima
+        for (j = 3; j >= 0; j--) {
+            //Começa a reatribuir o valor do resultado da soma, a partir do último que foi alterado e colocado na pilha até o primeiro.
+            for (i = 3; i >= 0; i--) {
+                if (tab[i][j] == -1) { //Verifica se o valor na posição é -1 para ser reatribuído.
+                    POP(L, &x); //Retira um valor do topo da pilha.
+                    tab[i][j] = x; //Valor atribuído novamente.
+                }
+            }
+        }
+    }
+    else if (tecla == 4){
+        //Seta para baixo
+        for (j = 3; j >= 0; j--) {
+            //Começa a reatribuir o valor do resultado da soma, começando pelo último que foi alterado e colocado na pilha até o primeiro.
+            for (i = 0; i < 4; i++) {
+                if (tab[i][j] == -1) { //Verifica se o valor na posição é -1 para ser reatribuído.
+                    POP(L, &x); //Retira um valor do topo da pilha.
+                    tab[i][j] = x; //Valor atribuído novamente.
+                }
+            }
+        }
+    }
 }
