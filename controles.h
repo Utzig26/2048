@@ -1,6 +1,8 @@
 /*funçoes para:
 	movimentação das peças
 */
+#include "Pilha_LE.h" //Biblioteca que contém as funções referentes a pilha.
+
 int movimentos (int tab[4][4], int tecla, int *pont, no **L);
 void atualiza_soma(int tab[4][4], int tecla, no **L);
 
