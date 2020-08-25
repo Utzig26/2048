@@ -1,34 +1,39 @@
 /*inicio do jogo*/
+#define TAM 4
 
-#include "estrutura.h"
-#include "controles.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <time.h>
 #include <conio.h>
-#include "Pilha_LE.h" //Biblioteca que contém as funções referentes a pilha.
 
+#include "Pilha_LE.h" //Biblioteca que contém as funções referentes a pilha.
+#include "estrutura.h"
+#include "controles.h"
 
 //Criei esse main só para testar as funções criadas.
 int main() {
-    int tab[4][4] = {0};
+    //Def de variaveis globais
+    int tab[TAM][TAM] = {0};
     int pont = 0;
-    int recorde = 0; //Falta criar função para armazenar a melhor pontuação!
+    int recorde = 0; 
     char tecla1[2];
     int tecla;
     no *L;
+    
+    srand(time(NULL)); //Comando para a pseudoaleatoriedade
+
     inicializa_tabuleiro(tab, &pont);
+    imprime_tabuleiro (tab, recorde, &pont);
     do {
-        imprime_tabuleiro (tab, recorde, &pont);
         gets(tecla1);
         tecla = atoi(tecla1);
-        movimentos(tab, tecla, &pont, &L);
-        if (movimentos(tab,tecla, &pont, &L) == 1) 
+        if (movimentos(tab, tecla, &pont, &L) == 1){
             num_aleatorio(tab);
-        atualiza_soma(tab, tecla, &L);
+        }
         //system("cls");
         imprime_tabuleiro (tab, recorde, &pont);
-    } while ((tecla != 78) && (perde(tab) != 1)); 
+    }while ((tecla != 9) && (perde(tab) != 1));
     return 0;
 }

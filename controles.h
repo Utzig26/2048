@@ -1,15 +1,17 @@
 /*funçoes para:
 	movimentação das peças
 */
-#include "Pilha_LE.h" //Biblioteca que contém as funções referentes a pilha.
 
 int movimentos (int tab[4][4], int tecla, int *pont, no **L);
 void atualiza_soma(int tab[4][4], int tecla, no **L);
 
 //CONTROLE DOS BLOCOS
+
 int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
     int i, j, aux2, aux, soma, x, y, d, move = 1; 
-    if (tecla == 1) {
+    int cont_mov= 0;
+    switch (tecla){
+    case 1:
         //Seta para a esquerda
         for (i = 0; i < 4; i++) {
             aux2 = 0; //A variável aux2 delimita o laço "for" com a variável aux.
@@ -19,22 +21,23 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                     for (aux; aux > aux2; aux--) { //Posiciona o número até j = 0 no máximo.
                         if (tab[i][aux-1] == 0) { //Se o número anterior é 0, há o deslocamento.
                             tab[i][aux-1] = tab[i][aux];
-                            tab[i][aux] = 0; 
+                            tab[i][aux] = 0;
+                            cont_mov++;
                         }
-                        else if ((tab[i][aux-1] == tab[i][aux]) && (tab[i][aux-1] != -1)) { //Se o número anterior é igual e esse número não é -1, ocorre a soma.
+                        else if ((tab[i][aux-1] == tab[i][aux]) && (tab[i][aux-1] != -1)) { //Se o número anterior é igual e esse número não é -1, ocorre a soma. 
                             soma = tab[i][aux-1] + tab[i][aux];
                             PUSH(L, soma); //Armazena o valor da soma em uma pilha.
                             tab[i][aux-1] = -1; //Para que impessa outra soma neste local novamente.
                             tab[i][aux] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
+                            cont_mov++;
                         }
                     } 
                 }
             }
         }
-    }
-    else if (tecla == 2) {
-        //Seta para a direita
+        break;
+     case 2: //Seta para a direita
         for (i = 0; i < 4; i++) {
             aux2 = 3; //A variável aux2 delimita o laço "for" com a variável aux.
             for (j = 2; j >= 0; j--) { //A coluna j começa no 2, pois se fosse no 3 não teria como ir para a direita.
@@ -44,6 +47,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                         if (tab[i][aux+1] == 0) { //Se o número posterior é 0, há o deslocamento.
                             tab[i][aux+1] = tab[i][aux];
                             tab[i][aux] = 0;
+                            cont_mov++;
                         }
                         else if ((tab[i][aux+1] == tab[i][aux]) && (tab[i][aux+1] != -1)) { //Se o número posterior é igual e esse número não é -1, ocorre a soma.
                             soma = tab[i][aux+1] + tab[i][aux];
@@ -51,14 +55,14 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                             tab[i][aux+1] = -1; //Para que impessa outra soma neste local novamente
                             tab[i][aux] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
+                            cont_mov++;
                         }
                     }
                 }
             }
         }    
-    }
-    else if (tecla == 3) {
-        //Seta para cima
+        break;
+    case 3:   //Seta para cima
         for (j = 0; j < 4; j++) {
             aux2 = 0; //A variável aux2 delimita o laço "for" com a variável aux.
             for (i = 1; i < 4; i++) { //A linha i começa no 1, pois se fosse no 0 não teria como ir para cima.
@@ -68,6 +72,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                         if (tab[aux-1][j] == 0) { //Se o número acima é 0, há o deslocamento.
                             tab[aux-1][j] = tab[aux][j];
                             tab[aux][j] = 0;
+                            cont_mov++;
                         }
                         else if ((tab[aux-1][j] == tab[aux][j]) && (tab[aux-1][j] != -1)) { //Se o número acima é igual e esse número não é -1, ocorre a soma.
                             soma = tab[aux-1][j] + tab[aux][j];
@@ -75,14 +80,14 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                             tab[aux-1][j] = -1; //Para que impessa outra soma neste local novamente.
                             tab[aux][j] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
+                            cont_mov++;
                         }
                     }
                 }
             }
         }    
-    }
-    else if (tecla == 4) {
-        //Seta para baixo
+        break;
+    case 4: //Seta para baixo
         for (j = 0; j < 4; j++) {
             aux2 = 3; //A variável aux2 delimita o laço "for" com a variável aux.
             for (i = 2; i >= 0; i--) { //A linha i começa no 2, pois se fosse no 3 não teria como ir para baixo.
@@ -92,6 +97,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                         if (tab[aux+1][j] == 0) { //Se o número abaixo é 0, há o deslocamento.
                             tab[aux+1][j] = tab[aux][j];
                             tab[aux][j] = 0;
+                            cont_mov++;
                         }
                         else if ((tab[aux+1][j] == tab[aux][j]) && (tab[aux+1][j] != -1)) { //Se o número abaixo é igual e esse número não é -1, ocorre a soma.
                             soma = tab[aux+1][j] + tab[aux][j];
@@ -99,18 +105,22 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
                             tab[aux+1][j] = -1; //Para que impessa outra soma neste local novamente.
                             tab[aux][j] = 0;
                             (*pont) += 4; //Pontuação recebe 4 unidades a mais, cada vez que dois blocos iguais são unidos.
+                            cont_mov++;
                         }
                     }
                 }
             }
         }  
-    }
-    else if ((tecla != 1) && (tecla != 2) && (tecla != 3) && (tecla != 4)) 
+        break;
+    default:
         move = 0;
-    if (move == 1) 
-        return 1;
-    else 
-        return 0;    
+        break;
+    }
+    atualiza_soma(tab, tecla, *&L);
+    if ((verifica_vazio(tab) == 0) || (cont_mov == 0))
+        move = 0;
+
+    return move;
 }
 
 //Função que altera os valores definidos como -1 na função movimentos(), os quais devem ser o resultado da soma.
