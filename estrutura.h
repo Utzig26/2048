@@ -22,23 +22,101 @@ void gotoxy( int column, int line ) {
 }
 // gotoxy(33,9);
 
+/*             0     1    2     3   4      5     6       7         8      */
+typedef enum{BLACK,BLUE,GREEN,CYAN,RED,MAGENTA,BROWN,LIGHTGRAY,DARKGRAY,
+LIGHTBLUE,LIGHTGREEN,LIGHTCYAN,LIGHTRED,LIGHTMAGENTA,YELLOW,WHITE} COLORS;
+/* 9         10        11        12        13          14    15          */
+static int __BACKGROUND = BLACK;
+static int __FOREGROUND = LIGHTGRAY;
+
+void textcolor (int letra, int fundo){
+    __FOREGROUND = letra;
+    __BACKGROUND = fundo;
+    SetConsoleTextAttribute (GetStdHandle (STD_OUTPUT_HANDLE),
+    letra + (__BACKGROUND << 4));
+}
+
+void fecha_tabuleiro () {
+    textcolor(15, 0);
+    printf(" |");
+}
+
 //Função que imprime o tabuleiro juntamente com os pontos, a melhor pontuação e mostra a opção de novo jogo (pressionando a tecla N).
 // Obs: ainda falta criar uma função para mostrar a melhor pontuação e uma que associe a tecla N à função inicializa_tabuleiro(tab, &pont).
 void imprime_tabuleiro (int tab[4][4], int recorde, int *pont) {
     int i, j;
     printf("\n");
+    textcolor(15, 0);
     printf("| RECORDE: %d         |\n", recorde);
     printf("| PONTUA%c%cO: %d       |\n", 128, 199 , *pont); 
     printf("| NOVO JOGO - N      |\n"); 
+    printf("| SAIR - Esc         |\n"); 
     printf("\n");
     
     for (i = 0; i < 4; i++) {
 		printf("|");
 		for (j = 0; j < 4; j++){
-			if (tab[i][j])
-                printf("%*d |", 4, tab[i][j]); 
-            else
+			switch (tab[i][j]) {
+            case 2:
+                textcolor(9, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 4:
+                textcolor(10, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 8:
+                textcolor(11, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 16:
+                textcolor(12, 0);
+                printf("%*d", 4, tab[i][j]);
+                fecha_tabuleiro(); 
+                break;
+            case 32:
+                textcolor(13, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 64:
+                textcolor(14, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 128:
+                textcolor(1, 0);
+                printf("%*d", 4, tab[i][j]);
+                fecha_tabuleiro(); 
+                break;
+            case 256:
+                textcolor(2, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 512:
+                textcolor(3, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            case 1024:
+                textcolor(7, 0);
+                printf("%*d", 4, tab[i][j]);
+                fecha_tabuleiro(); 
+                break;
+            case 2048:
+                textcolor(6, 0);
+                printf("%*d", 4, tab[i][j]); 
+                fecha_tabuleiro();
+                break;
+            default:
+                textcolor(15, 0);
                 printf("     |");
+                break;
+            }
         }
         printf("\n");
 	}

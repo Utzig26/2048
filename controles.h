@@ -11,7 +11,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
     int i, j, aux2, aux, soma, x, y, d, move = 1; 
     int cont_mov= 0;
     switch (tecla){
-    case 1:
+    case 75:
         //Seta para a esquerda
         for (i = 0; i < 4; i++) {
             aux2 = 0; //A variável aux2 delimita o laço "for" com a variável aux.
@@ -37,7 +37,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
             }
         }
         break;
-     case 2: //Seta para a direita
+     case 77: //Seta para a direita
         for (i = 0; i < 4; i++) {
             aux2 = 3; //A variável aux2 delimita o laço "for" com a variável aux.
             for (j = 2; j >= 0; j--) { //A coluna j começa no 2, pois se fosse no 3 não teria como ir para a direita.
@@ -62,7 +62,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
             }
         }    
         break;
-    case 3:   //Seta para cima
+    case 72:   //Seta para cima
         for (j = 0; j < 4; j++) {
             aux2 = 0; //A variável aux2 delimita o laço "for" com a variável aux.
             for (i = 1; i < 4; i++) { //A linha i começa no 1, pois se fosse no 0 não teria como ir para cima.
@@ -87,7 +87,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
             }
         }    
         break;
-    case 4: //Seta para baixo
+    case 80: //Seta para baixo
         for (j = 0; j < 4; j++) {
             aux2 = 3; //A variável aux2 delimita o laço "for" com a variável aux.
             for (i = 2; i >= 0; i--) { //A linha i começa no 2, pois se fosse no 3 não teria como ir para baixo.
@@ -126,7 +126,7 @@ int movimentos (int tab[4][4], int tecla, int *pont, no **L) {
 //Função que altera os valores definidos como -1 na função movimentos(), os quais devem ser o resultado da soma.
 void atualiza_soma(int tab[4][4], int tecla, no **L) {
     int i, j, x;
-    if (tecla == 1) {
+    if (tecla == 75) {
         //Seta para esquerda
         for (i = 3; i >= 0; i--) {
             //Começa a reatribuir o valor do resultado da soma, começando pelo último que foi alterado e colocado na pilha.
@@ -138,7 +138,7 @@ void atualiza_soma(int tab[4][4], int tecla, no **L) {
             }
         }
     }
-    else if (tecla == 2) {
+    else if (tecla == 77) {
         //Seta para direita
         for (i = 3; i >= 0; i--) {
             //Começa a reatribuir o valor do resultado da soma, começando pelo último que foi alterado e colocado na pilha até o primeiro.
@@ -150,7 +150,7 @@ void atualiza_soma(int tab[4][4], int tecla, no **L) {
             }
         }
     }
-    else if (tecla == 3) {
+    else if (tecla == 72) {
         //Seta para cima
         for (j = 3; j >= 0; j--) {
             //Começa a reatribuir o valor do resultado da soma, a partir do último que foi alterado e colocado na pilha até o primeiro.
@@ -162,7 +162,7 @@ void atualiza_soma(int tab[4][4], int tecla, no **L) {
             }
         }
     }
-    else if (tecla == 4){
+    else if (tecla == 80){
         //Seta para baixo
         for (j = 3; j >= 0; j--) {
             //Começa a reatribuir o valor do resultado da soma, começando pelo último que foi alterado e colocado na pilha até o primeiro.
