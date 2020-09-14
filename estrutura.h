@@ -5,12 +5,20 @@
 */
 #define NUM_INI 2
 
+int pont = 0;
+int recorde = 0; //Ainda falta uma função para arquivar e selecionar a melhor pontuação.
+
 void imprime_tabuleiro (int tab[4][4], int recorde, int *pont);
 void dois_aleatorio(int tab[4][4]);
 void num_aleatorio(int tab[4][4]);
 int perde (int tab[4][4]);
 void inicializa_tabuleiro(int tab[4][4], int *pont);
+void testa_recorde();
 
+void testa_recorde (int *pont, int *recorde){
+    if(*pont > *recorde)
+        *recorde = *pont;
+}
 
 //Função que posiciona o cursor de acordo com coordenadas (X,Y).
 //Obs: Por enquanto não foi usada.
@@ -43,14 +51,14 @@ void fecha_tabuleiro () {
 
 //Função que imprime o tabuleiro juntamente com os pontos, a melhor pontuação e mostra a opção de novo jogo (pressionando a tecla N).
 // Obs: ainda falta criar uma função para mostrar a melhor pontuação e uma que associe a tecla N à função inicializa_tabuleiro(tab, &pont).
-void imprime_tabuleiro (int tab[4][4], int recorde, int *pont) {
+void imprime_tabuleiro (int tab[4][4], int *recorde, int *pont) {
     int i, j;
     printf("\n");
     textcolor(15, 0);
-    printf("| RECORDE: %d         |\n", recorde);
-    printf("| PONTUA%c%cO: %d       |\n", 128, 199 , *pont); 
-    printf("| NOVO JOGO - N      |\n"); 
-    printf("| SAIR - Esc         |\n"); 
+    printf("| RECORDE: %d         \n", *recorde);
+    printf("| PONTUA%c%cO: %d     \n", 128, 199 , *pont); 
+    printf("| NOVO JOGO - N       \n"); 
+    printf("| SAIR - Esc          \n"); 
     printf("\n");
     
     for (i = 0; i < 4; i++) {
